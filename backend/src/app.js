@@ -14,6 +14,7 @@ import authRoutes          from "./modules/auth/auth.routes.js";
 import eventsRoutes        from "./modules/events/events.routes.js";
 import participantsRoutes  from "./modules/participants/participants.routes.js";
 import registrationsRoutes from "./modules/registrations/registrations.routes.js";
+import dashboardRoutes     from "./modules/dashboard/dashboard.routes.js";
 
 const app = express();
 
@@ -53,6 +54,7 @@ app.use("/api/auth",          authRoutes);
 app.use("/api/events",        eventsRoutes);
 app.use("/api/participants",  participantsRoutes);
 app.use("/api/registrations", registrationsRoutes);
+app.use("/api/dashboard",     dashboardRoutes);
 
 // Health check (pas d auth requise)
 app.get("/api/health", (req, res) => {

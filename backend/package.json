@@ -1,4 +1,4 @@
-﻿{
+{
   "name": "eventhub-backend",
   "version": "1.0.0",
   "description": "EventHub REST API — Node.js 20 + Express + PostgreSQL",
