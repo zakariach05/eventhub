@@ -1,4 +1,4 @@
-﻿// src/modules/registrations/registrations.repository.js
+// src/modules/registrations/registrations.repository.js
 // Toutes les requetes SQL parametrees du module registrations.
 
 import { pool } from "../../config/db.js";
@@ -188,12 +188,10 @@ export async function createRegistrationTx({ eventId, participantId }) {
     );
 
     await client.query("COMMIT");
-    return toRegistration({
-      ...regRows[0],
-      event_title:      null,
-      participant_name:  null,
-      participant_email: null,
-    });
+
+    // Requete de relecture avec les jointures pour la reponse complete
+    const full = await findRegistrationById(regRows[0].id, pool);
+    return full;
   } catch (err) {
     await client.query("ROLLBACK");
     throw err;
@@ -265,12 +263,10 @@ export async function updateRegistrationStatusTx(id, newStatus) {
     );
 
     await client.query("COMMIT");
-    return toRegistration({
-      ...updated[0],
-      event_title:       null,
-      participant_name:  null,
-      participant_email: null,
-    });
+
+    // Relecture avec jointures
+    const full = await findRegistrationById(updated[0].id, pool);
+    return full;
   } catch (err) {
     await client.query("ROLLBACK");
     throw err;

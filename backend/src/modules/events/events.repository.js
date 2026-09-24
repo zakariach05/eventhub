@@ -1,4 +1,4 @@
-﻿// src/modules/events/events.repository.js
+// src/modules/events/events.repository.js
 // Toutes les requetes SQL parametrees du module events.
 // Aucune concatenation de chaine, aucun secret en dur.
 
@@ -143,6 +143,7 @@ export async function updateEvent(id, fields) {
       RETURNING *`,
     values
   );
+  if (!rows[0]) return null; // Le service verifie l existence en amont
   return toEvent(rows[0]);
 }
 

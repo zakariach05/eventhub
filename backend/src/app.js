@@ -8,6 +8,8 @@ import cors       from "cors";
 import rateLimit  from "express-rate-limit";
 import { env }    from "./config/env.js";
 import { errorHandler } from "./middlewares/errorHandler.js";
+import swaggerUi        from "swagger-ui-express";
+import { swaggerSpec }  from "./swagger.js";
 
 // Modules de routes
 import authRoutes          from "./modules/auth/auth.routes.js";
@@ -55,6 +57,12 @@ app.use("/api/events",        eventsRoutes);
 app.use("/api/participants",  participantsRoutes);
 app.use("/api/registrations", registrationsRoutes);
 app.use("/api/dashboard",     dashboardRoutes);
+
+// Swagger UI — disponible uniquement hors production
+if (env.NODE_ENV !== "production") {
+  app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+  console.log(`[SWAGGER] Docs : http://localhost:${env.PORT}/api-docs`);
+}
 
 // Health check (pas d auth requise)
 app.get("/api/health", (req, res) => {

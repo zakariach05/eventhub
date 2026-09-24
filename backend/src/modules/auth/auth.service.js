@@ -1,4 +1,4 @@
-﻿// src/modules/auth/auth.service.js
+// src/modules/auth/auth.service.js
 // Logique metier : verification du mot de passe, creation du JWT.
 
 import bcrypt from "bcrypt";
@@ -25,7 +25,9 @@ export async function login(email, password) {
   const user = await findUserByEmail(email);
 
   // bcrypt.compare meme si user est null pour eviter les timing attacks
-  const hash       = user?.password_hash ?? "$2b$12$invalidhashfortimingatk000000000000000000000";
+  // Hash factice valide (60 chars, format correct) — bcrypt.compare renvoie false sans exception
+  const DUMMY_HASH = "$2b$12$AAAAAAAAAAAAAAAAAAAAAA.AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
+  const hash       = user?.password_hash ?? DUMMY_HASH;
   const isValid    = await bcrypt.compare(password, hash);
 
   if (!user || !isValid) {
